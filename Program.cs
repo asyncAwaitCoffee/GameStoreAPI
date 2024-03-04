@@ -1,4 +1,5 @@
 using GameStoreApi.Endpoints;
+using GameStoreApi.Repositories;
 
 namespace GameStoreApi
 {
@@ -8,6 +9,8 @@ namespace GameStoreApi
         {
 
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddSingleton<IGameRepository, InMemGameRepository>();
+
             var app = builder.Build();
 
             app.MapGamesEndpoints();

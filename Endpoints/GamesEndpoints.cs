@@ -8,24 +8,22 @@ namespace GameStoreApi.Endpoints
         const string GetGameEndPoint = "GetGame";        
         public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
         {
-            InMemGameRepository repository = new InMemGameRepository();
-
             var group = routes.MapGroup("/games").WithParameterValidation();
 
-            group.MapGet("/", () => repository.GetAll());
-            group.MapGet("/{id:int}", (int id) =>
+            group.MapGet("/", (IGameRepository repository) => repository.GetAll());
+            group.MapGet("/{id:int}", (IGameRepository repository, int id) =>
             {
                 Game? game = repository.GetGame(id);
                 return game is not null ? Results.Ok(game) : Results.NotFound();
             }).WithName(GetGameEndPoint);
 
-            group.MapPost("/", (Game game) =>
+            group.MapPost("/", (IGameRepository repository, Game game) =>
             {
                 repository.CreateGame(game);
                 return Results.CreatedAtRoute(GetGameEndPoint, new { id = game.Id }, game);
             });
 
-            group.MapPut("/{id:int}", (int id, Game updatedGame) =>
+            group.MapPut("/{id:int}", (IGameRepository repository, int id, Game updatedGame) =>
             {
                 Game? existingGame = repository.GetGame(id);
 
@@ -45,7 +43,7 @@ namespace GameStoreApi.Endpoints
                 return Results.NoContent();
             });
 
-            group.MapDelete("/{id:int}", (int id) =>
+            group.MapDelete("/{id:int}", (IGameRepository repository, int id) =>
             {
                 Game? existingGame = repository.GetGame(id);
 

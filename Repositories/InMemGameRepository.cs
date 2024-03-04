@@ -2,8 +2,9 @@
 
 namespace GameStoreApi.Repositories
 {
-    public class InMemGameRepository
+    public class InMemGameRepository : IGameRepository
     {
+        // better use concurrency collections
         private readonly List<Game> games = new()
             {
                 new()
