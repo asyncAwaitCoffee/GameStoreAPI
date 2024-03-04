@@ -12,6 +12,7 @@ namespace GameStoreApi.Entities
         [Range(1, 200)]
         public decimal Price { get; set; }
         public DateTime ReleaseDate { get; set; }
+        [Url]
         [StringLength(100)]
         public required string ImageURI { get; set; }
     }

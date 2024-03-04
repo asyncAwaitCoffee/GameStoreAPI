@@ -10,6 +10,7 @@ namespace GameStoreApi
 
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSingleton<IGameRepository, InMemGameRepository>();
+            var connString = builder.Configuration.GetConnectionString("COURSES_DB");
 
             var app = builder.Build();
 
